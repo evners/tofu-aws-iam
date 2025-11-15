@@ -42,6 +42,7 @@ repos:
           - --hook-config=--create-file-if-not-exist=true # Boolean. true or false
           - --hook-config=--use-standard-markers=true # Boolean. Defaults in v1.x to false. Set to true for compatibility with terraform-docs
         stages: [pre-commit]
+        exclude: ^examples/.*$
 
       # 6. Infracost Breakdown (infracost breakdown)
       # Provides cost estimates for your OpenTofu projects.
