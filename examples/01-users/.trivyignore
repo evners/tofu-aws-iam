@@ -1,5 +1,0 @@
-# This file is used to ignore specific vulnerabilities during Trivy scans.
-# Add CVE identifiers (one per line) to exclude them from the vulnerability report.
-
-AVD-AWS-0098 (LOW): Secret explicitly uses the default key.
-AVD-AWS-0143 (LOW): One or more policies are attached directly to a user

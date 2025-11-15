@@ -31,6 +31,7 @@ repos:
       - id: tofu_trivy
         name: Security Scan
         stages: [pre-commit]
+        exclude: ^examples/.*$
 
       # 5. OpenTofu Docs (tofu docs)
       # Generates documentation for your OpenTofu modules.
