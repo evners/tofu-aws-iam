@@ -74,3 +74,48 @@ resource "aws_iam_user_policy_attachment" "change_password" {
   policy_arn = "arn:aws:iam::aws:policy/IAMUserChangePassword" # This policy allows users to change their own password.
 
 }
+
+# Create access keys for IAM users who require them.
+resource "aws_iam_access_key" "this" {
+
+  # Iterate over users in `var.users` who have `access_key_enabled = true`
+  for_each = { for user in var.users : user.name => user if lookup(user, "access_key", false) }
+
+  # Associate the access key with the IAM user.
+  user = aws_iam_user.this[each.key].name
+
+}
+
+# Create a Secrets Manager secret to store IAM user access key credentials.
+resource "aws_secretsmanager_secret" "iam_user_access_credentials" {
+
+  # Loops through each IAM access key created above.
+  for_each = aws_iam_access_key.this
+
+  name        = "iam-user/${each.key}"
+  description = "Access key credentials for IAM user ${each.key}"
+
+  # Tags for the secret, including the user name and any extra tags.
+  tags = merge(
+    {
+      "User" = each.key
+    },
+    var.extra_tags
+  )
+
+}
+
+# Store the access key credentials in the Secrets Manager secret.
+resource "aws_secretsmanager_secret_version" "iam_user_access_credentials" {
+
+  # Loops through each IAM access key created above.
+  for_each = aws_iam_access_key.this
+
+  secret_id = aws_secretsmanager_secret.iam_user_access_credentials[each.key].id # Reference to the secret created above.
+
+  # The secret string contains the access key ID and secret access key in JSON format.
+  secret_string = jsonencode({
+    "AWS_ACCESS_KEY_ID"     = aws_iam_access_key.this[each.key].id
+    "AWS_SECRET_ACCESS_KEY" = aws_iam_access_key.this[each.key].secret
+  })
+}

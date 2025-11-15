@@ -11,6 +11,7 @@ variable "users" {
     console_access          = optional(bool, false)
     password_length         = optional(number, 16)
     password_reset_required = optional(bool, true)
+    access_key              = optional(bool, false)
   }))
   default = []
 }
