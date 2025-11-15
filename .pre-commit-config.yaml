@@ -52,7 +52,6 @@ repos:
         stages: [pre-commit]
         args:
           - --args=--path=.
-        verbose: true
 
   # Check for secrets in the codebase using gitleaks.
   # For more information, see: https://github.com/gitleaks/gitleaks.
