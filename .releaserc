@@ -3,7 +3,7 @@
     "main"
   ],
   "ci": false,
-  "repositoryUrl": "https://github.com/gucasassi/tofu-aws-iam.git",
+  "repositoryUrl": "https://github.com/evners/tofu-aws-iam.git",
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
