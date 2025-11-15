@@ -15,6 +15,16 @@ variable "users" {
     groups                  = optional(list(string), [])
   }))
   default = []
+
+  # Validate that all groups referenced by users exist in var.groups.
+  validation {
+    condition = alltrue([
+      for user in var.users : alltrue([
+        for group in user.groups : contains([for g in var.groups : g.name], group)
+      ])
+    ])
+    error_message = "All groups referenced by users must exist in var.groups."
+  }
 }
 
 ################################################################################################################
