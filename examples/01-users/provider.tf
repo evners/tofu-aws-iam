@@ -7,8 +7,8 @@ provider "aws" {
   # Apply default tags to all resources managed by this provider.
   default_tags {
     tags = {
-      "OPENTOFU" = "true"                                          # Tag all resources to indicate they are managed by OpenTofu.
-      "IAC_REPO" = "https://github.com/gucasassi/tofu-aws-iam.git" # Repository name.
+      "OpenTofu"   = "true"                                       # Tag all resources to indicate they are managed by OpenTofu.
+      "Repository" = "https://github.com/evners/tofu-aws-iam.git" # Repository name.
     }
   }
 }
