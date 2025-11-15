@@ -1,0 +1,57 @@
+# SENSITIVE STATE FILES
+# The state file contains sensitive information (e.g., outputs, resource IDs,
+# and sometimes secrets). It must NEVER be committed to Git.
+
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+
+# PLAN FILES
+# These binary plan files contain a preview of the infrastructure changes
+# that would be applied to the cloud provider.
+
+*.tfplan
+*.tfplan.binary
+
+# LOCK FILES
+# State lock file, used to ensure only one developer or process
+# can apply changes at a time.
+
+.terraform.lock.hcl
+.tofu.lock.hcl
+.terraform/modules/modules.json # Modules lock file (though the .terraform directory is ignored below)
+
+# CACHE AND WORKING DIRECTORIES
+# Cache directory and temporary working files created by OpenTofu/Terraform.
+
+.terraform
+.tofu
+.tofu.d
+.tmp/
+
+# MISCELLANEOUS DATA
+# Generated debug logs and other temporary files.
+
+crash.log
+crash.log.json
+override.tf
+override.tf.json
+# Debug logs if enabled
+tfsec-*.json
+logs/
+.DS_Store
+
+# Common environment variables for secrets
+*.auto.tfvars
+*.auto.tfvars.json
+
+# Temporary or local variable files
+*.tfvars
+*.tfvars.json
+
+# Explicit secrets files if used
+secrets.tfvars
+secrets.tfvars.json
+
+# Exclude infracost files.
+.infracost/

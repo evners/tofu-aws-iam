@@ -1,0 +1,3 @@
+# CODEOWNERS - Defines automatic reviewers for changes in the repository.
+
+- @evners/opentofu

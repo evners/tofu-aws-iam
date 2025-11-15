@@ -1,0 +1,72 @@
+# Define the pre-commit hooks that should be installed and run on every commit.
+default_install_hook_types:
+  - pre-commit
+  - commit-msg
+
+repos:
+  # Official OpenTofu pre-commit hooks.
+  - repo: https://github.com/tofuutils/pre-commit-opentofu
+    rev: "v2.2.2"
+    hooks:
+      # 1. OpenTofu Format (tofu fmt)
+      # Automatically formats your OpenTofu code to adhere to standard style conventions.
+      - id: tofu_fmt
+        name: Format
+        stages: [pre-commit]
+
+      # 2. OpenTofu Validate (tofu validate)
+      # Ensures the syntactic validity of your code.
+      - id: tofu_validate
+        name: Validate
+        stages: [pre-commit]
+
+      # 3. OpenTofu Lint (tflint)
+      # Analyzes your OpenTofu code for potential errors and enforces best practices.
+      - id: tofu_tflint
+        name: Lint Code
+        stages: [pre-commit]
+
+      # 4. OpenTofu Security Scan (trivy)
+      # Scans your OpenTofu code for security vulnerabilities and misconfigurations.
+      - id: tofu_trivy
+        name: Security Scan
+        stages: [pre-commit]
+
+      # 5. OpenTofu Docs (tofu docs)
+      # Generates documentation for your OpenTofu modules.
+      - id: tofu_docs
+        name: Generate Docs
+        args:
+          - --hook-config=--path-to-file=README.md # Valid UNIX path. I.e. ../TFDOC.md or docs/README.md etc.
+          - --hook-config=--add-to-existing-file=true # Boolean. true or false
+          - --hook-config=--create-file-if-not-exist=true # Boolean. true or false
+          - --hook-config=--use-standard-markers=true # Boolean. Defaults in v1.x to false. Set to true for compatibility with terraform-docs
+        stages: [pre-commit]
+
+      # 6. Infracost Breakdown (infracost breakdown)
+      # Provides cost estimates for your OpenTofu projects.
+      - id: infracost_breakdown
+        name: Cost Estimate
+        stages: [pre-commit]
+        args:
+          - --args=--path=.
+        verbose: true
+
+  # Check for secrets in the codebase using gitleaks.
+  # For more information, see: https://github.com/gitleaks/gitleaks.
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.29.0
+    hooks:
+      - id: gitleaks
+        name: Gitleaks Scan
+        stages: [pre-commit]
+        args: ["--config=.gitleaks.toml"]
+
+  # Validate commit messages using conventional commits.
+  # For more information, see: https://www.conventionalcommits.org/en/v1.0.0/.
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.10.0
+    hooks:
+      - id: commitizen
+        name: Commit Validation
+        stages: [commit-msg]

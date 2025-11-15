@@ -1,0 +1,23 @@
+# Workflow to release a new version of the project using semantic-release.
+name: Release
+
+# Define events that will trigger the workflow.
+on:
+  # Trigger the workflow on pushes to the main branch.
+  push:
+    branches:
+      - main
+
+# Define the permissions for the workflow.
+# Note: The workflow needs to have write permissions to the repository to create tags and releases.
+permissions:
+  contents: write # To create a release.
+  issues: write # To write comments to issues.
+  pull-requests: write # To write comments to PRs.
+
+# Define the jobs that will run.
+jobs:
+  # Job 1: Release a new version of the module using semantic-release.
+  release:
+    uses: evners/gh-actions-hub/.github/workflows/semantic-release.yml@main
+    secrets: inherit
