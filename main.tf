@@ -160,3 +160,15 @@ resource "aws_iam_group_policy_attachment" "this" {
   policy_arn = each.value.policy_arn                     # Specifies the ARN of the managed policy to attach.
 
 }
+
+# Creates inline policies for each group in `var.groups`.
+resource "aws_iam_group_policy" "this" {
+
+  # Iterates over all group inline policies defined for each group.
+  for_each = local.group_inline_policies
+
+  name   = each.value.policy_name                    # Defines the inline policy name.
+  group  = aws_iam_group.this[each.value.group].name # Associates the policy with the IAM group.
+  policy = each.value.policy_json                    # Attaches the JSON policy document to the group.
+
+}

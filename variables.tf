@@ -27,6 +27,10 @@ variable "groups" {
     name             = string
     path             = optional(string, "/")
     managed_policies = optional(list(string), [])
+    inline_policies = optional(list(object({
+      name   = string
+      policy = string
+    })), [])
   }))
   default = []
 }

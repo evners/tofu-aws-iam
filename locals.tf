@@ -37,4 +37,26 @@ locals {
       policy_arn = pair.policy_arn
     }
   }
+
+  # Create a flat map for group inline policy attachments.
+  # For each group in var.groups, iterate over its inline_policies (if any) and build a list of objects with group, policy_name, and policy_json fields.
+  group_inline_policies = {
+    for pair in flatten([
+      # Iterate over all groups.
+      for group in var.groups : [
+        # For each inline policy in the group (if any), create an object.
+        for policy in try(group.inline_policies, []) : {
+          group       = group.name
+          policy_name = policy.name
+          policy_json = policy.policy
+        }
+      ]
+    ]) :
+    # Use a unique key combining group and policy name.
+    "${pair.group}-${pair.policy_name}" => {
+      group       = pair.group
+      policy_name = pair.policy_name
+      policy_json = pair.policy_json
+    }
+  }
 }
