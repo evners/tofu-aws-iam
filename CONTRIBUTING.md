@@ -40,7 +40,7 @@ The following structure provides a clear organization of the **repository**.
 To collaborate, clone the repository and customize it as needed:
 
 ```bash
-git clone https://github.com/gucasassi/tofu-aws-iam.git
+git clone https://github.com/evners/tofu-aws-iam.git
 cd tofu-aws-iam
 ```
 
