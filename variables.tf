@@ -24,8 +24,9 @@ variable "users" {
 variable "groups" {
   description = "List of IAM groups to create, including managed and inline policies"
   type = list(object({
-    name = string
-    path = optional(string, "/")
+    name             = string
+    path             = optional(string, "/")
+    managed_policies = optional(list(string), [])
   }))
   default = []
 }

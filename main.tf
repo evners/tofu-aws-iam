@@ -149,3 +149,14 @@ resource "aws_iam_group_membership" "this" {
   depends_on = [aws_iam_user.this, aws_iam_group.this]
 
 }
+
+# Attaches managed policies to each group in `var.groups`.
+resource "aws_iam_group_policy_attachment" "this" {
+
+  # Iterates over all group managed policies defined for each group.
+  for_each = local.group_managed_policies
+
+  group      = aws_iam_group.this[each.value.group].name # Associates the managed policy with the IAM group.
+  policy_arn = each.value.policy_arn                     # Specifies the ARN of the managed policy to attach.
+
+}
