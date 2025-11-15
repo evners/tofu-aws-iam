@@ -3,14 +3,15 @@
 locals {
   iam_users = [
     # Define a simple user.
-    { name = "jane.smith", groups = ["devs"], console_access = true },
     { name = "john.doe", groups = ["admins", "devs"] },
     # Define a user with console access.
+    { name = "jane.smith", groups = ["devs"], console_access = true },
   ]
 
   # Define IAM groups.
   iam_groups = [
     { name = "devs" },
-    { name = "admins" },
+    # Define a group with a managed policy.
+    { name = "admins", managed_policies = ["arn:aws:iam::aws:policy/AdministratorAccess"] },
   ]
 }
