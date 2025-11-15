@@ -1,6 +1,6 @@
-## TOFU-MODULE: Example
+## Example: Create IAM Users
 
-This example shows how to create **S3 Bucket** with default configuration.
+This example shows how to create **IAM Users** with optional console access. It also stores the generated passwords in **AWS Systems Manager Parameter Store** as `SecureString`. To use this example, please create `tfvars` file:
 
 ```bash
 touch default.auto.tfvars
