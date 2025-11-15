@@ -1,7 +1,23 @@
-# Define the input variables for the module.
-# Example: Placeholder for a simple variable definition used by the main resource.
+################################################################################################################
+###############################                 USERS                  #########################################
+################################################################################################################
 
-variable "bucket_name" {
-  description = "A unique and descriptive name for the primary resource managed by this module."
-  type        = string
+variable "users" {
+  description = "List of IAM users to create."
+  type = list(object({
+    name          = string
+    path          = optional(string, "/")
+    force_destroy = optional(bool, false)
+  }))
+  default = []
+}
+
+################################################################################################################
+###############################                 TAGS                   #########################################
+################################################################################################################
+
+variable "extra_tags" {
+  description = "A map of extra tags to add to all resources created by the module."
+  type        = map(string)
+  default     = {}
 }

@@ -1,12 +1,2 @@
 # This file is used to ignore specific vulnerabilities during Trivy scans.
 # Add CVE identifiers (one per line) to exclude them from the vulnerability report.
-
-AVD-AWS-0088 (HIGH): Bucket does not have encryption enabled
-AVD-AWS-0132 (HIGH): Bucket does not encrypt data with a customer managed key
-AVD-AWS-0087 (HIGH): No public access block so not blocking public policies
-AVD-AWS-0086 (HIGH): No public access block so not blocking public acls
-AVD-AWS-0091 (HIGH): No public access block so not blocking public acls
-AVD-AWS-0093 (HIGH): No public access block so not restricting public buckets
-AVD-AWS-0090 (MEDIUM): Bucket does not have versioning enabled
-AVD-AWS-0094 (LOW): Bucket does not have a corresponding public access block
-AVD-AWS-0089 (LOW): Bucket has logging disabled
