@@ -12,6 +12,7 @@ variable "users" {
     password_length         = optional(number, 16)
     password_reset_required = optional(bool, true)
     access_key              = optional(bool, false)
+    groups                  = optional(list(string), [])
   }))
   default = []
 }

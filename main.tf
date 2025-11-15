@@ -134,3 +134,18 @@ resource "aws_iam_group" "this" {
   path = each.value.path # Defines the IAM group path.
 
 }
+
+# Add user to groups.
+resource "aws_iam_group_membership" "this" {
+
+  # Iterates over user group memberships to attach users to groups.
+  for_each = local.groups_memberships
+
+  name  = each.key   # Unique identifier for Terraform state.
+  users = each.value # Adds user to the IAM group.
+  group = each.key   # Group name.
+
+  # Ensure the user is created before adding them to the group.
+  depends_on = [aws_iam_user.this, aws_iam_group.this]
+
+}
