@@ -43,6 +43,16 @@ variable "groups" {
     })), [])
   }))
   default = []
+
+  # Validate that inline policy names are unique within each group.
+  validation {
+    condition = alltrue([
+      for group in var.groups : (
+        length(distinct([for p in try(group.inline_policies, []) : p.name])) == length(try(group.inline_policies, []))
+      )
+    ])
+    error_message = "Inline policy names must be unique within each group."
+  }
 }
 
 ################################################################################################################
