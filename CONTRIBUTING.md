@@ -30,7 +30,7 @@ The following structure provides a clear organization of the **repository**.
 ├── main.tf                    # Main terraform module.
 ├── outputs.tf                 # Defines outputs for the module.
 ├── README.md                  # Auto docs generated with tfdocs.
-├── CONTRIBUTING.md            # Security policy.
+├── SECURITY.md                # Security policy.
 ├── variables.tf               # Input variables for the module.
 ├── versions.tf                # Required terraform config.
 ```
