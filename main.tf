@@ -16,3 +16,61 @@ resource "aws_iam_user" "this" {
   tags = var.extra_tags
 
 }
+
+# Creates an IAM user login profile for users who have console access.
+# This generates a password and enforces a password reset on first login.
+resource "aws_iam_user_login_profile" "this" {
+
+  # For each user in `var.users`, creates a login profile if `console_access` is set to true.
+  for_each = { for user in var.users : user.name => user if lookup(user, "console_access", false) }
+
+  user                    = aws_iam_user.this[each.key].name
+  password_length         = each.value.password_length         # Generates a random password of 16 characters.
+  password_reset_required = each.value.password_reset_required # Forces password reset on first login.
+
+}
+
+# Creates a Secrets Manager secret to store IAM user passwords for each user with a login profile.
+resource "aws_secretsmanager_secret" "iam_user_passwords" {
+
+  # Loops through each IAM user login profile created above.
+  for_each = aws_iam_user_login_profile.this
+
+  name        = "iam-user/${each.key}"
+  description = "Password for IAM user '${each.key}', must be changed on first login."
+
+  # Tags for the secret, including the user name and any extra tags.
+  tags = merge(
+    {
+      "User" = each.key
+    },
+    var.extra_tags
+  )
+}
+
+# Stores the password value in the secret on secrets manager.
+resource "aws_secretsmanager_secret_version" "iam_user_passwords" {
+
+  # Loops through each IAM user login profile created above.
+  for_each = aws_iam_user_login_profile.this
+
+  # Reference to the secret created above.
+  secret_id = aws_secretsmanager_secret.iam_user_passwords[each.key].id
+
+  # The password generated for the user login profile.
+  secret_string = jsonencode({
+    "PASSWORD" = aws_iam_user_login_profile.this[each.key].password
+  })
+
+}
+
+# Attaches the IAMUserChangePassword policy to IAM users.
+resource "aws_iam_user_policy_attachment" "change_password" {
+
+  # Iterates over each IAM user login profile to attach the IAMUserChangePassword policy.
+  for_each = aws_iam_user_login_profile.this
+
+  user       = each.key                                        # Sets the IAM username.
+  policy_arn = "arn:aws:iam::aws:policy/IAMUserChangePassword" # This policy allows users to change their own password.
+
+}

@@ -5,9 +5,12 @@
 variable "users" {
   description = "List of IAM users to create."
   type = list(object({
-    name          = string
-    path          = optional(string, "/")
-    force_destroy = optional(bool, false)
+    name                    = string
+    path                    = optional(string, "/")
+    force_destroy           = optional(bool, false)
+    console_access          = optional(bool, false)
+    password_length         = optional(number, 16)
+    password_reset_required = optional(bool, true)
   }))
   default = []
 }
